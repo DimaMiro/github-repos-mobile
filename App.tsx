@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {AppLoading} from 'expo';
 import {Platform, StatusBar, StyleSheet, View} from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator';
+import {NavigationProvider} from "react-navigation";
 
 export default function App(props){
   const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -17,7 +18,11 @@ export default function App(props){
     );
   } else {
     return (
-        <AppNavigator />
+        <View style={{ flex: 1 }}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="light-content" />}
+          <AppNavigator/>
+        </View>
+
     );
   }
 }
