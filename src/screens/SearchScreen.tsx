@@ -12,7 +12,7 @@ export default class SearchScreen extends React.Component {
         return(
             <View style={styles.container}>
                 <Image source={images.logo}/>
-                <CustomTextInput additionalStyle={styles.textInput} placeholderText = "Enter new list name" />
+                <CustomTextInput additionalStyle={styles.textInput} placeholderText = "Enter a username" />
                 <PrimaryButton title={'Search User'} additionalStyle={styles.button}/>
             </View>
         );
