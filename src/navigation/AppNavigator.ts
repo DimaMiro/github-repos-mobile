@@ -12,7 +12,7 @@ const RootStack = createStackNavigator(
         defaultNavigationOptions: {
             header: null
         },
-        initialRouteName: 'Home',
+        initialRouteName: 'Search',
     },
 )
 const AppContainer = createAppContainer(RootStack)

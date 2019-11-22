@@ -4,21 +4,27 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import colors from "../res/colors";
 import helpers from "../res/helpers";
 import images from "../res/images";
+import TouchableIcon from "../components/TouchableIcon";
 
-export default class HomeScreen extends React.Component {
+interface Props {
+    navigation: any,
+}
+
+export default class HomeScreen extends React.Component<Props> {
     render(){
         return(
             <View style={styles.container}>
                 <View style={styles.headerContainer}>
                     <View style={styles.topContainer}>
                         <Image source={images.logo} style={{width: 175, resizeMode: 'contain'}}/>
-                        <Image source={images.searchIcon}/>
+                        <TouchableIcon iconName={'searchIcon'}
+                                       onPressAction={() => this.props.navigation.navigate('Search')}/>
                     </View>
                     <View style={styles.userInfoBox}>
-                        <Image source={images.avatarPlaceholder} style={{backgroundColor: 'grey', width: 64, height: 64, resizeMode: 'cover', borderRadius: helpers.radius.normal}}/>
+                        <Image source={images.avatarPlaceholder} style={styles.avatarImage}/>
                         <View style={{marginLeft: helpers.margin.m}}>
-                            <Text style={{fontSize: helpers.fonSize.title, color: 'white', fontWeight: 'bold'}}>DimaMiro</Text>
-                            <Text style={{fontSize: helpers.fonSize.subtitle, color: 'white', marginTop: helpers.margin.xs}}>DimaMiro</Text>
+                            <Text style={styles.userFullName}>Dima Miro</Text>
+                            <Text style={styles.userName}>DimaMiro</Text>
                         </View>
                     </View>
                 </View>
@@ -49,5 +55,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: helpers.margin.m,
         alignItems: 'center',
+    },
+    avatarImage: {
+        width: 64,
+        height: 64,
+        resizeMode: 'cover',
+        borderRadius: helpers.radius.normal
+    },
+    userFullName: {
+        fontSize: helpers.fonSize.title,
+        color: 'white',
+        fontWeight: 'bold'
+    },
+    userName: {
+        fontSize: helpers.fonSize.subtitle,
+        color: 'white',
+        marginTop: helpers.margin.xs
     }
 });

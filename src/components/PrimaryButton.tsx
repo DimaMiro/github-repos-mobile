@@ -5,7 +5,9 @@ import helpers from "../res/helpers";
 
 const PrimaryButton = (props) => {
     return (
-        <TouchableOpacity style={[styles.primaryButton, props.additionalStyle]} onPress={props.onPressAction}>
+        <TouchableOpacity
+            style={[styles.primaryButton, props.additionalStyle]}
+            onPress={props.onPressAction}>
             <Text style={styles.title}>{props.title}</Text>
         </TouchableOpacity>
     )

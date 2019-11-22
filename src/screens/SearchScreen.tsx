@@ -7,13 +7,22 @@ import helpers from "../res/helpers";
 import CustomTextInput from '../components/CustomTextInput';
 import PrimaryButton from "../components/PrimaryButton";
 
-export default class SearchScreen extends React.Component {
+interface Props {
+    navigation: any,
+}
+
+export default class SearchScreen extends React.Component<Props> {
     render(){
         return(
             <View style={styles.container}>
                 <Image source={images.logo}/>
-                <CustomTextInput placeholderText = "Enter a username" additionalStyle={styles.textInput} />
-                <PrimaryButton title={'Search User'} additionalStyle={styles.button} />
+                <CustomTextInput
+                    placeholderText = "Enter a username"
+                    additionalStyle={styles.textInput} />
+                <PrimaryButton
+                    title={'Search User'}
+                    additionalStyle={styles.button}
+                    onPressAction={() => this.props.navigation.navigate('Home')}/>
             </View>
         );
     }
