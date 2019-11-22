@@ -4,7 +4,13 @@ import colors from "../res/colors";
 import helpers from "../res/helpers";
 
 const CustomTextInput = (props) => {
-    return <TextInput style={[styles.textInput, props.additionalStyle]} placeholder={props.placeholderText} placeholderTextColor={'rgba(255, 255, 255, 0.5)'}/>
+    return <TextInput
+        style={[styles.textInput, props.additionalStyle]}
+        placeholder={props.placeholderText}
+        placeholderTextColor={'rgba(255, 255, 255, 0.5)'}
+        onChangeText={props.onChangeText}
+        value={props.value}
+        autoFocus = {true}/>
 }
 
 export default CustomTextInput
