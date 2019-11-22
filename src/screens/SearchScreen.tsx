@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, Button} from 'react-native';
+import {View, StyleSheet, Image} from 'react-native';
 import colors from '../res/colors';
 import images from '../res/images';
 import helpers from "../res/helpers";
@@ -12,8 +12,8 @@ export default class SearchScreen extends React.Component {
         return(
             <View style={styles.container}>
                 <Image source={images.logo}/>
-                <CustomTextInput additionalStyle={styles.textInput} placeholderText = "Enter a username" />
-                <PrimaryButton title={'Search User'} additionalStyle={styles.button}/>
+                <CustomTextInput placeholderText = "Enter a username" additionalStyle={styles.textInput} />
+                <PrimaryButton title={'Search User'} additionalStyle={styles.button} />
             </View>
         );
     }

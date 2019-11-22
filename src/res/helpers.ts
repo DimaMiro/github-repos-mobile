@@ -14,6 +14,7 @@ export default {
         subtitle: 17,
     },
     margin: {
+        xs: 4,
         s: 8,
         m: 16,
         l: 24,
@@ -23,7 +24,7 @@ export default {
         s: 8,
         m: 16,
         l: 20,
-        xl: 32,
+        xl: 24,
     },
     radius: {
         normal: 8
