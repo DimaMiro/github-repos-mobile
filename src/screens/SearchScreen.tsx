@@ -10,7 +10,7 @@ import ApiService from '../services/api.service'
 import GUser from '../interfaces/user.interface'
 
 import CustomTextInput from '../components/CustomTextInput';
-import PrimaryButton from "../components/PrimaryButton";
+import PrimaryButton from '../components/PrimaryButton';
 
 interface Props {
     navigation: any,
@@ -31,7 +31,7 @@ export default class SearchScreen extends React.Component<Props, State> {
             <View style={styles.container}>
                 <Image source={images.logo}/>
                 <CustomTextInput
-                    placeholderText = "Enter a username"
+                    placeholderText = 'Enter a username'
                     additionalStyle={styles.textInput}
                     value={this.state.inputText}
                     onChangeText={(text) => this.setState({inputText: text})}/>
@@ -53,9 +53,9 @@ export default class SearchScreen extends React.Component<Props, State> {
                             avatar_url: res.avatar_url,
                             login: res.login,
                             name: res.name,
-                        }
-                        console.log(user)
-                        this.props.navigation.navigate('Home')
+                        };
+                        console.log(user);
+                        this.props.navigation.navigate('Home');
                         this.setState({isLoading: false});
                         this.setState({inputText: ''});
                     } else {
@@ -65,7 +65,8 @@ export default class SearchScreen extends React.Component<Props, State> {
                             [
                                 {
                                     text: 'OK',
-                                    onPress: () => this.setState({isLoading: false})},
+                                    onPress: () => this.setState({isLoading: false})
+                                },
                             ],
                             {cancelable: false},
                         );
@@ -82,7 +83,6 @@ export default class SearchScreen extends React.Component<Props, State> {
                 {cancelable: false},
             );
         }
-
     }
 }
 

@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import colors from "../res/colors";
 import helpers from "../res/helpers";
 import images from "../res/images";
 import TouchableIcon from "../components/TouchableIcon";
+import RepoRow from "../components/RepoRow";
 
 interface Props {
     navigation: any,
@@ -28,7 +29,9 @@ export default class HomeScreen extends React.Component<Props> {
                         </View>
                     </View>
                 </View>
-                <Text>Homescreen</Text>
+                <ScrollView style={styles.repoContainer}>
+                    <RepoRow/>
+                </ScrollView>
             </View>
         );
     }
@@ -71,5 +74,9 @@ const styles = StyleSheet.create({
         fontSize: helpers.fonSize.subtitle,
         color: 'white',
         marginTop: helpers.margin.xs
+    },
+    repoContainer: {
+        paddingTop: helpers.padding.m,
+        paddingHorizontal: helpers.padding.l,
     }
 });

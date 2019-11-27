@@ -13,7 +13,7 @@ const PrimaryButton = (props) => {
             <Text style={styles.title}>{props.isLoading ? 'Loading...' : props.title}</Text>
         </TouchableOpacity>
     )
-}
+};
 
 export default PrimaryButton
 
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
     inactive:  {
         backgroundColor: 'grey',
     }
-})
+});
