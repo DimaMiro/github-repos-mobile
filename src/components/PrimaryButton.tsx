@@ -6,9 +6,11 @@ import helpers from "../res/helpers";
 const PrimaryButton = (props) => {
     return (
         <TouchableOpacity
-            style={[styles.primaryButton, props.additionalStyle]}
+            style={props.isLoading ?
+                [styles.primaryButton, props.additionalStyle, styles.inactive]
+            : [styles.primaryButton, props.additionalStyle]}
             onPress={props.onPressAction}>
-            <Text style={styles.title}>{props.title}</Text>
+            <Text style={styles.title}>{props.isLoading ? 'Loading...' : props.title}</Text>
         </TouchableOpacity>
     )
 }
@@ -29,5 +31,8 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: helpers.fonSize.p,
         textAlign: 'center',
+    },
+    inactive:  {
+        backgroundColor: 'grey',
     }
 })

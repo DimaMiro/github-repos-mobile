@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import {View, StyleSheet, Image, Alert} from 'react-native';
 
 import colors from '../res/colors';
 import images from '../res/images';
@@ -14,16 +14,15 @@ interface Props {
     navigation: any,
 }
 interface State {
-    text: string,
+    inputText: string,
+    isLoading: boolean,
 }
 
 export default class SearchScreen extends React.Component<Props, State> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            text: '',
-        };
-    }
+    state = {
+        inputText: '',
+        isLoading: false,
+    };
 
     render(){
         return(
@@ -32,22 +31,38 @@ export default class SearchScreen extends React.Component<Props, State> {
                 <CustomTextInput
                     placeholderText = "Enter a username"
                     additionalStyle={styles.textInput}
-                    value={this.state.text}
-                    onChangeText={(text) => this.setState({text})}/>
+                    value={this.state.inputText}
+                    onChangeText={(text) => this.setState({inputText: text})}/>
                 <PrimaryButton
                     title={'Search User'}
                     additionalStyle={styles.button}
-                    onPressAction={() => this.searchUserButtonPressed()}/>
+                    onPressAction={() => this.searchUserButtonPressed()}
+                    isLoading={this.state.isLoading}/>
             </View>
         );
     }
     searchUserButtonPressed(){
-        return ApiService.getUserProfileAsync('DimaMiro')
-            .then(res => {
-                console.log(res)
-                this.props.navigation.navigate('Home')
-            })
-            .catch(error => console.log(error))
+        if (this.state.inputText !== ''){
+            this.setState({isLoading: true});
+            ApiService.getUserProfileAsync(this.state.inputText)
+                .then(res => {
+                    console.log(res)
+                    this.props.navigation.navigate('Home')
+                    this.setState({isLoading: false});
+                    this.setState({inputText: ''});
+                })
+                .catch(error => console.log(error))
+        } else {
+            Alert.alert(
+                'Empty input',
+                'Please enter username',
+                [
+                    {text: 'OK'},
+                ],
+                {cancelable: false},
+            );
+        }
+
     }
 }
 
@@ -57,7 +72,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.darkBgColor,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingHorizontal: helpers.padding.l
+        paddingHorizontal: helpers.padding.l,
+        paddingBottom: 100,
     },
     textInput: {
         marginTop: helpers.margin.xl,
