@@ -7,7 +7,7 @@ import images from "../res/images";
 const RepoRow = (props) => {
     return (
         <TouchableOpacity
-            style={[styles.container, props.additionalStyle]}
+            style={styles.container}
             onPress={props.onPressAction}>
             <View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between'}}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -29,7 +29,6 @@ const RepoRow = (props) => {
 };
 
 export default RepoRow
-
 
 const styles = StyleSheet.create({
     container: {

@@ -1,0 +1,6 @@
+export default {
+    ADD_USER: 'ADD_USER',
+    UPDATE_USER: 'UPDATE_USER',
+    ADD_REPOS: 'ADD_REPOS',
+    UPDATE_REPOS: 'UPDATE_REPOS',
+};
