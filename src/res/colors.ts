@@ -6,4 +6,5 @@ export default {
     darkBgColor: '#24292D',
     inputBgColor: '#3F4447',
     borderColor: '#D1D5D9',
+    lightGrey: '#D1D5D9'
 };

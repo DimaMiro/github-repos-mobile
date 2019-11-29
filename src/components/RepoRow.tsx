@@ -3,8 +3,14 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import colors from "../res/colors";
 import helpers from "../res/helpers";
 import images from "../res/images";
+import {GRepo} from "../interfaces/repo.interface";
 
-const RepoRow = (props) => {
+interface Props {
+    onPressAction?: () => void,
+    repo: GRepo
+}
+
+const RepoRow = (props: Props) => {
     return (
         <TouchableOpacity
             style={styles.container}
@@ -12,17 +18,17 @@ const RepoRow = (props) => {
             <View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between'}}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Image source={images.repoIcon}/>
-                    <Text style={{marginLeft: helpers.margin.s, color: colors.primaryOnLightTextColor, fontSize: helpers.fonSize.p, fontWeight: '500'}}>Repo Name</Text>
+                    <Text style={{marginLeft: helpers.margin.s, color: colors.primaryOnLightTextColor, fontSize: helpers.fonSize.p, fontWeight: '500'}}>{props.repo.name}</Text>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Image source={images.starIcon}/>
-                    <Text style={{marginLeft: helpers.margin.xs, color: colors.secondaryOnLightTextColor, fontSize: helpers.fonSize.p, fontWeight: '500'}}>10</Text>
+                    <Text style={{marginLeft: helpers.margin.xs, color: colors.secondaryOnLightTextColor, fontSize: helpers.fonSize.p, fontWeight: '500'}}>{props.repo.stargazers_count}</Text>
                 </View>
             </View>
-            <Text style={{color: colors.secondaryOnLightTextColor, fontSize: helpers.fonSize.caption, fontWeight: '400', marginTop: helpers.margin.xs}}>React Native Recipe App</Text>
+            <Text style={{color: colors.secondaryOnLightTextColor, fontSize: helpers.fonSize.caption, fontWeight: '400', marginTop: helpers.margin.xs}}>{props.repo.description}</Text>
             <View style={{flexDirection: 'row', alignItems: 'center', marginTop: helpers.margin.xs}}>
                 <View style={{backgroundColor: 'orange', width: 8, height: 8, borderRadius: 4}}/>
-                <Text style={{marginLeft: 6, color: colors.secondaryOnLightTextColor, fontSize: helpers.fonSize.caption, fontWeight: '400'}}>Swift</Text>
+                <Text style={{marginLeft: 6, color: colors.secondaryOnLightTextColor, fontSize: helpers.fonSize.caption, fontWeight: '400'}}>{props.repo.language}</Text>
             </View>
         </TouchableOpacity>
     )
@@ -37,5 +43,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: colors.borderColor,
         padding: helpers.padding.m,
+        marginBottom: helpers.margin.s
     }
 });

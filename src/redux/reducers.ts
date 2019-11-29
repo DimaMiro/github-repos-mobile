@@ -1,18 +1,20 @@
 import { combineReducers } from 'redux';
 import ACTION_TYPES from './actionTypes';
-import GUser from "../interfaces/user.interface";
-import {GRepos} from "../interfaces/repo.interface";
 
-const userReducer = (state: GUser, action) => {
+const userReducer = (state = {}, action) => {
     if (action.type === ACTION_TYPES.ADD_USER) {
         return action.payload
     } else {
-        return null
+        return state
     }
 };
 
-const repoReducer = (state: GRepos, action) => {
-    return null
+const repoReducer = (state = [], action) => {
+    if (action.type === ACTION_TYPES.ADD_REPOS) {
+        return action.payload
+    } else {
+        return state
+    }
 };
 
 const reducers = combineReducers({

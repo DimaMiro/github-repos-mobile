@@ -1,17 +1,63 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
+import { connect } from 'react-redux';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import colors from "../res/colors";
 import helpers from "../res/helpers";
 import images from "../res/images";
 import TouchableIcon from "../components/TouchableIcon";
 import RepoRow from "../components/RepoRow";
+import GUser from "../interfaces/user.interface";
+import {GRepo} from "../interfaces/repo.interface";
+import ApiService from "../services/api.service";
+import ReduxService from "../services/redux.service";
 
 interface Props {
     navigation: any,
+    user: GUser,
+    repos: Array<GRepo>
 }
 
-export default class HomeScreen extends React.Component<Props> {
+class HomeScreen extends React.Component<Props> {
+    componentDidMount(): void {
+        ApiService.getReposAsync(this.props.user.login)
+            .then(res => {
+                let repoArray: Array<GRepo> = [];
+                res.map(item => {
+                    const repo = {
+                        id: item.id,
+                        name: item.name,
+                        description: item.description,
+                        language: item.language,
+                        stargazers_count: item.stargazers_count
+                    }
+                    repoArray.push(repo)
+                });
+                ReduxService.addReposToStore(repoArray);
+            });
+    }
+
+
+    getNameBlock(){
+        if (this.props.user.name !== null) {
+            return(<View style={{marginLeft: helpers.margin.m}}>
+                <Text style={styles.userFullName}>{this.props.user.name}</Text>
+                <Text style={styles.userName}>{this.props.user.login}</Text>
+            </View>)
+        } else {
+            return(
+                <View style={{marginLeft: helpers.margin.m}}>
+                    <Text style={styles.userName}>{this.props.user.login}</Text>
+                </View>
+            )
+        }
+    }
+    getRepoBlock() {
+        return this.props.repos.map(item => {
+            return <RepoRow key={item.id} repo={item}/>
+        })
+    }
+
     render(){
         return(
             <View style={styles.container}>
@@ -22,20 +68,26 @@ export default class HomeScreen extends React.Component<Props> {
                                        onPressAction={() => this.props.navigation.navigate('Search')}/>
                     </View>
                     <View style={styles.userInfoBox}>
-                        <Image source={images.avatarPlaceholder} style={styles.avatarImage}/>
-                        <View style={{marginLeft: helpers.margin.m}}>
-                            <Text style={styles.userFullName}>Dima Miro</Text>
-                            <Text style={styles.userName}>DimaMiro</Text>
-                        </View>
+                        <Image source={{uri: this.props.user.avatar_url}} style={styles.avatarImage}/>
+                        {this.getNameBlock()}
                     </View>
                 </View>
-                <ScrollView style={styles.repoContainer}>
-                    <RepoRow/>
+                <ScrollView contentContainerStyle={styles.repoContainer}>
+                    {this.getRepoBlock()}
                 </ScrollView>
             </View>
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.userState,
+        repos: state.repoState
+    }
+}
+
+export default connect(mapStateToProps)(HomeScreen)
 
 const styles = StyleSheet.create({
     container: {
@@ -60,6 +112,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     avatarImage: {
+        backgroundColor: colors.lightGrey,
         width: 64,
         height: 64,
         resizeMode: 'cover',
@@ -78,5 +131,6 @@ const styles = StyleSheet.create({
     repoContainer: {
         paddingTop: helpers.padding.m,
         paddingHorizontal: helpers.padding.l,
+        paddingBottom: helpers.padding.xl
     }
 });
