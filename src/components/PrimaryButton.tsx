@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, ActivityIndicator, View} from 'react-native';
 import colors from "../res/colors";
 import helpers from "../res/helpers";
 
@@ -10,7 +10,13 @@ const PrimaryButton = (props) => {
                 [styles.primaryButton, props.additionalStyle, styles.inactive]
             : [styles.primaryButton, props.additionalStyle]}
             onPress={props.onPressAction}>
-            <Text style={styles.title}>{props.isLoading ? 'Loading...' : props.title}</Text>
+            {props.isLoading ?
+                <View style={styles.loading}>
+                    <ActivityIndicator/>
+                    <Text style={styles.title}> Loading...</Text>
+                </View>
+                : <Text style={styles.title}>{props.title}</Text>
+            }
         </TouchableOpacity>
     )
 };
@@ -34,5 +40,9 @@ const styles = StyleSheet.create({
     },
     inactive:  {
         backgroundColor: 'grey',
+    },
+    loading: {
+        flexDirection: 'row',
+        justifyContent: 'center',
     }
 });

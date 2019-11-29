@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView, ActivityIndicator} from 'react-native';
 import { connect } from 'react-redux';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import colors from "../res/colors";
@@ -17,9 +17,20 @@ interface Props {
     user: GUser,
     repos: Array<GRepo>
 }
+interface State {
+    isLoading: boolean,
+}
 
-class HomeScreen extends React.Component<Props> {
+class HomeScreen extends React.Component<Props, State> {
+    state = {
+        isLoading: false,
+    };
+
     componentDidMount(): void {
+        this.getReposFromApi();
+    }
+    getReposFromApi() {
+        this.setState({isLoading: true});
         ApiService.getReposAsync(this.props.user.login)
             .then(res => {
                 let repoArray: Array<GRepo> = [];
@@ -34,9 +45,10 @@ class HomeScreen extends React.Component<Props> {
                     repoArray.push(repo)
                 });
                 ReduxService.addReposToStore(repoArray);
-            });
+                this.setState({isLoading: false});
+            })
+            .catch(error => console.log(error));
     }
-
 
     getNameBlock(){
         if (this.props.user.name !== null) {
@@ -53,9 +65,17 @@ class HomeScreen extends React.Component<Props> {
         }
     }
     getRepoBlock() {
-        return this.props.repos.map(item => {
-            return <RepoRow key={item.id} repo={item}/>
-        })
+        if(this.state.isLoading) {
+            return <ActivityIndicator/>
+        } else {
+            if (typeof this.props.repos !== 'undefined' && this.props.repos.length > 0) {
+                return this.props.repos.map(item => {
+                    return <RepoRow key={item.id} repo={item}/>
+                })
+            } else {
+                return <Text>No repos here</Text>
+            }
+        }
     }
 
     render(){
