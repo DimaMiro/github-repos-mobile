@@ -1,11 +1,13 @@
 import React from 'react';
 import {View, StyleSheet, Image, Alert} from 'react-native';
+import { connect } from 'react-redux';
 
 import colors from '../res/colors';
 import images from '../res/images';
 import helpers from "../res/helpers";
 
-import ApiService from '../services/api.service'
+import ApiService from '../services/api.service';
+import ReduxService from "../services/redux.service";
 
 import GUser from '../interfaces/user.interface'
 
@@ -20,7 +22,7 @@ interface State {
     isLoading: boolean,
 }
 
-export default class SearchScreen extends React.Component<Props, State> {
+class SearchScreen extends React.Component<Props, State> {
     state = {
         inputText: '',
         isLoading: false,
@@ -54,7 +56,7 @@ export default class SearchScreen extends React.Component<Props, State> {
                             login: res.login,
                             name: res.name,
                         };
-                        console.log(user);
+                        ReduxService.addUserToStore(user);
                         this.props.navigation.navigate('Home');
                         this.setState({isLoading: false});
                         this.setState({inputText: ''});
@@ -85,6 +87,14 @@ export default class SearchScreen extends React.Component<Props, State> {
         }
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        recipes: state.recipeState
+    }
+}
+
+export default connect(mapStateToProps)(SearchScreen)
 
 const styles = StyleSheet.create({
     container: {

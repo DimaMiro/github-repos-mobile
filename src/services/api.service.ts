@@ -1,5 +1,5 @@
 import {API_URL} from "../utils/api.config";
-import {GUser} from "../interfaces/user.interface";
+import GUser from "../interfaces/user.interface";
 import {GRepos} from "../interfaces/repo.interface";
 
 function get<T>(path: string) {

@@ -1,4 +1,4 @@
-import ACTION_TYPES from '../res/actionTypes'
+import ACTION_TYPES from './actionTypes'
 import GUser from "../interfaces/user.interface";
 import {GRepos} from "../interfaces/repo.interface";
 
