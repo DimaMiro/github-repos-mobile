@@ -1,8 +1,6 @@
-import {API_URL} from "../utils/api.config";
-import GUser from "../interfaces/user.interface";
-import {GRepo} from "../interfaces/repo.interface";
+import {API_URL} from '../utils/api.config';
 
-function get<T>(path: string) {
+function get(path: string) {
     return fetch(API_URL + path)
         .then((response) => response.json())
         .catch((error) => {
@@ -11,11 +9,11 @@ function get<T>(path: string) {
 }
 
 function getUserProfileAsync(username: string){
-    return get<GUser>('users/'+ username)
+    return get('users/'+ username)
 }
 
 function getReposAsync(username: string){
-    return get<Array<GRepo>>('users/' + username + '/repos')
+    return get('users/' + username + '/repos')
 }
 
 function getCommitListAsync(username: string, repoName: string){

@@ -4,6 +4,8 @@ import colors from "../res/colors";
 import helpers from "../res/helpers";
 import images from "../res/images";
 import {GRepo} from "../interfaces/repo.interface";
+import LangColorService from "../services/langColor.service";
+
 
 interface Props {
     onPressAction?: () => void,
@@ -27,7 +29,7 @@ const RepoRow = (props: Props) => {
             </View>
             <Text style={{color: colors.secondaryOnLightTextColor, fontSize: helpers.fonSize.caption, fontWeight: '400', marginTop: helpers.margin.xs}}>{props.repo.description}</Text>
             <View style={{flexDirection: 'row', alignItems: 'center', marginTop: helpers.margin.xs}}>
-                <View style={{backgroundColor: 'orange', width: 8, height: 8, borderRadius: 4}}/>
+                <View style={{backgroundColor: LangColorService.checkForLangColor(props.repo.language), width: 8, height: 8, borderRadius: 4}}/>
                 <Text style={{marginLeft: 6, color: colors.secondaryOnLightTextColor, fontSize: helpers.fonSize.caption, fontWeight: '400'}}>{props.repo.language}</Text>
             </View>
         </TouchableOpacity>
