@@ -1,6 +1,6 @@
 import {API_URL} from "../utils/api.config";
 import GUser from "../interfaces/user.interface";
-import {GRepos} from "../interfaces/repo.interface";
+import {GRepo} from "../interfaces/repo.interface";
 
 function get<T>(path: string) {
     return fetch(API_URL + path)
@@ -15,11 +15,16 @@ function getUserProfileAsync(username: string){
 }
 
 function getReposAsync(username: string){
-    return get<GRepos>('users/' + username + '/repos')
+    return get<Array<GRepo>>('users/' + username + '/repos')
+}
+
+function getCommitListAsync(username: string, repoName: string){
+    return get('repos/'+ username + '/'+ repoName + '/commits')
 }
 
 const ApiService = {
     getUserProfileAsync,
-    getReposAsync
+    getReposAsync,
+    getCommitListAsync
 }
 export default ApiService

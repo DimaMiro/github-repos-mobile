@@ -29,6 +29,28 @@ class HomeScreen extends React.Component<Props, State> {
     componentDidMount(): void {
         this.getReposFromApi();
     }
+
+    render(){
+        return(
+            <View style={styles.container}>
+                <View style={styles.headerContainer}>
+                    <View style={styles.topContainer}>
+                        <Image source={images.logo} style={{width: 175, resizeMode: 'contain'}}/>
+                        <TouchableIcon iconName={'searchIcon'}
+                                       onPressAction={() => this.props.navigation.navigate('Search')}/>
+                    </View>
+                    <View style={styles.userInfoBox}>
+                        <Image source={{uri: this.props.user.avatar_url}} style={styles.avatarImage}/>
+                        {this.getNameBlock()}
+                    </View>
+                </View>
+                <ScrollView contentContainerStyle={styles.repoContainer}>
+                    {this.getRepoBlock()}
+                </ScrollView>
+            </View>
+        );
+    }
+
     getReposFromApi() {
         this.setState({isLoading: true});
         ApiService.getReposAsync(this.props.user.login)
@@ -70,33 +92,16 @@ class HomeScreen extends React.Component<Props, State> {
         } else {
             if (typeof this.props.repos !== 'undefined' && this.props.repos.length > 0) {
                 return this.props.repos.map(item => {
-                    return <RepoRow key={item.id} repo={item}/>
+                    return <RepoRow key={item.id} repo={item} onPressAction={() => this.repoRowPressed(item.name)}/>
                 })
             } else {
                 return <Text>No repos here</Text>
             }
         }
     }
-
-    render(){
-        return(
-            <View style={styles.container}>
-                <View style={styles.headerContainer}>
-                    <View style={styles.topContainer}>
-                        <Image source={images.logo} style={{width: 175, resizeMode: 'contain'}}/>
-                        <TouchableIcon iconName={'searchIcon'}
-                                       onPressAction={() => this.props.navigation.navigate('Search')}/>
-                    </View>
-                    <View style={styles.userInfoBox}>
-                        <Image source={{uri: this.props.user.avatar_url}} style={styles.avatarImage}/>
-                        {this.getNameBlock()}
-                    </View>
-                </View>
-                <ScrollView contentContainerStyle={styles.repoContainer}>
-                    {this.getRepoBlock()}
-                </ScrollView>
-            </View>
-        );
+    repoRowPressed(repoName: string){
+        console.log(repoName, this.props.user.login)
+        this.props.navigation.navigate('CommitList',{userName: this.props.user.login, repoName: repoName});
     }
 }
 
