@@ -27,6 +27,7 @@ export default {
         xl: 24,
     },
     radius: {
+        small: 4,
         normal: 8
     }
 };

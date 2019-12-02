@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, ScrollView, ActivityIndicator} from 'react-native';
+import {Animated, View, Text, StyleSheet, Image, ScrollView, ActivityIndicator} from 'react-native';
 import { connect } from 'react-redux';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import colors from "../res/colors";
@@ -12,6 +12,11 @@ import {GRepo} from "../interfaces/repo.interface";
 import ApiService from "../services/api.service";
 import ReduxService from "../services/redux.service";
 
+
+const HEADER_MAX_HEIGHT = 152 + getStatusBarHeight();
+const HEADER_MIN_HEIGHT = 64 + getStatusBarHeight();
+const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
+
 interface Props {
     navigation: any,
     user: GUser,
@@ -19,23 +24,63 @@ interface Props {
 }
 interface State {
     isLoading: boolean,
+    scrollY: Animated.Value
 }
 
 class HomeScreen extends React.Component<Props, State> {
-    state = {
-        isLoading: false,
-    };
+
+    constructor(props){
+        super(props);
+        this.state = {
+            isLoading: false,
+            scrollY: new Animated.Value(0),
+        };
+    }
 
     componentDidMount(): void {
         this.getReposFromApi();
     }
 
     render(){
+        const headerHeight = this.state.scrollY.interpolate({
+            inputRange: [0, HEADER_SCROLL_DISTANCE],
+            outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+            extrapolate: 'clamp',
+        });
+        const collapsedTopContainerInfoBoxOpacity = this.state.scrollY.interpolate({
+            inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
+            outputRange: [0, 0, 1],
+            extrapolate: 'clamp',
+        });
+        const logoOpacity = this.state.scrollY.interpolate({
+            inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
+            outputRange: [1, 1, 0],
+            extrapolate: 'clamp',
+        });
         return(
             <View style={styles.container}>
-                <View style={styles.headerContainer}>
+                <ScrollView
+                    contentContainerStyle={styles.repoContainer}
+                    scrollEventThrottle={16}
+                    onScroll={Animated.event(
+                        [{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]
+                    )}>
+                    <View style={styles.scrollViewContent}>
+                        {this.getRepoBlock()}
+                    </View>
+                </ScrollView>
+                <Animated.View style={[styles.headerContainer, {height: headerHeight}]}>
                     <View style={styles.topContainer}>
-                        <Image source={images.logo} style={{width: 175, resizeMode: 'contain'}}/>
+                        <View>
+                            <Animated.Image source={images.logo} style={{width: 175, resizeMode: 'contain', opacity: logoOpacity}}/>
+                            <Animated.View style={[styles.collapsedTopContainerInfoBox, {opacity: collapsedTopContainerInfoBoxOpacity}]}>
+                                <Image source={{uri: this.props.user.avatar_url}} style={styles.collapsedAvatarImage}/>
+                                <View style={styles.collapsedNameBlock}>
+                                    <Text style={styles.collapsedUserFullName}>{this.props.user.name}</Text>
+                                    <Text style={styles.collapsedUserName}>{this.props.user.login}</Text>
+                                </View>
+                            </Animated.View>
+                        </View>
                         <TouchableIcon iconName={'searchIcon'}
                                        onPressAction={() => this.props.navigation.navigate('Search')}/>
                     </View>
@@ -43,10 +88,7 @@ class HomeScreen extends React.Component<Props, State> {
                         <Image source={{uri: this.props.user.avatar_url}} style={styles.avatarImage}/>
                         {this.getNameBlock()}
                     </View>
-                </View>
-                <ScrollView contentContainerStyle={styles.repoContainer}>
-                    {this.getRepoBlock()}
-                </ScrollView>
+                </Animated.View>
             </View>
         );
     }
@@ -74,10 +116,11 @@ class HomeScreen extends React.Component<Props, State> {
 
     getNameBlock(){
         if (this.props.user.name !== null) {
-            return(<View style={{marginLeft: helpers.margin.m}}>
-                <Text style={styles.userFullName}>{this.props.user.name}</Text>
-                <Text style={styles.userName}>{this.props.user.login}</Text>
-            </View>)
+            return(
+                <View style={{marginLeft: helpers.margin.m}}>
+                    <Text style={styles.userFullName}>{this.props.user.name}</Text>
+                    <Text style={styles.userName}>{this.props.user.login}</Text>
+                </View>)
         } else {
             return(
                 <View style={{marginLeft: helpers.margin.m}}>
@@ -120,11 +163,16 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     headerContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
         backgroundColor: colors.darkBgColor,
         width: '100%',
         paddingTop: getStatusBarHeight() + helpers.padding.s,
         paddingBottom: helpers.padding.xl,
         paddingHorizontal: helpers.padding.l,
+        overflow: 'hidden'
     },
     topContainer: {
         flexDirection: 'row',
@@ -143,6 +191,32 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         borderRadius: helpers.radius.normal
     },
+    collapsedAvatarImage: {
+        width: 36,
+        height: 36,
+        borderRadius: helpers.radius.small,
+    },
+    collapsedTopContainerInfoBox: {
+        position: 'absolute',
+        flexDirection: 'row',
+        alignItems: 'center',
+        top: helpers.margin.xs,
+    },
+    collapsedNameBlock: {
+        alignItems: 'baseline',
+        flexDirection: 'row',
+        marginLeft: helpers.margin.s,
+    },
+    collapsedUserFullName: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: helpers.fonSize.subtitle,
+    },
+    collapsedUserName: {
+        color: '#A7A9AB',
+        fontSize: helpers.fonSize.caption,
+        marginLeft: helpers.margin.xs,
+    },
     userFullName: {
         fontSize: helpers.fonSize.title,
         color: 'white',
@@ -153,9 +227,12 @@ const styles = StyleSheet.create({
         color: 'white',
         marginTop: helpers.margin.xs
     },
+    scrollViewContent: {
+        marginTop: HEADER_MAX_HEIGHT,
+    },
     repoContainer: {
         paddingTop: helpers.padding.m,
         paddingHorizontal: helpers.padding.l,
-        paddingBottom: helpers.padding.xl
+        paddingBottom: helpers.padding.xl,
     }
 });
