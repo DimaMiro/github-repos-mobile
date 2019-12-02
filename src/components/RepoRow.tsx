@@ -17,10 +17,10 @@ const RepoRow = (props: Props) => {
         <TouchableOpacity
             style={styles.container}
             onPress={props.onPressAction}>
-            <View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', width:'100%', justifyContent: 'space-between'}}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Image source={images.repoIcon}/>
-                    <Text style={{marginLeft: helpers.margin.s, color: colors.primaryOnLightTextColor, fontSize: helpers.fonSize.p, fontWeight: '500'}}>{props.repo.name}</Text>
+                    <Text style={{maxWidth: 220, marginLeft: helpers.margin.s, color: colors.primaryOnLightTextColor, fontSize: helpers.fonSize.p, fontWeight: '500'}} numberOfLines={1}>{props.repo.name}</Text>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Image source={images.starIcon}/>

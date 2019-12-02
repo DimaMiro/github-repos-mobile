@@ -39,7 +39,7 @@ export default class CommitListScreen extends React.Component<Props, State> {
                 <View style={styles.headerContainer}>
                     <TouchableIcon iconName={'backIcon'}
                                    onPressAction={() => this.props.navigation.goBack()}/>
-                    <Text style={styles.headerTitle}>{this.state.userName}/{this.state.repoName}</Text>
+                    <Text style={styles.headerTitle} numberOfLines={1}>{this.state.userName}/{this.state.repoName}</Text>
                 </View>
                 <ScrollView contentContainerStyle={styles.commitContainer}>
                     <Text>Commits</Text>
@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         justifyContent: 'center',
         flex: 1,
-        paddingRight: 24
+        paddingRight: 24,
+        paddingLeft: 12,
     },
     commitContainer: {
         paddingTop: helpers.padding.m,
