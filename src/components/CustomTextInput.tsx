@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     textInput: {
         height: helpers.size.xxl,
         width: '100%',
-        backgroundColor: colors.inputBgColor,
+        backgroundColor: colors.darkColor,
         color: 'white',
         borderRadius: helpers.radius.normal,
         paddingHorizontal: helpers.padding.m,

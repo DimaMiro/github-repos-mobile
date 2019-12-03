@@ -17,9 +17,18 @@ const repoReducer = (state = [], action) => {
     }
 };
 
+const commitReducer = (state = [], action) => {
+    if (action.type === ACTION_TYPES.ADD_COMMITS) {
+        return action.payload
+    } else {
+        return state
+    }
+};
+
 const reducers = combineReducers({
     userState: userReducer,
-    repoState: repoReducer
+    repoState: repoReducer,
+    commitState: commitReducer
 })
 
 export default reducers

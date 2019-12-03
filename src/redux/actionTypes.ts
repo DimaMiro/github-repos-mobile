@@ -3,4 +3,5 @@ export default {
     UPDATE_USER: 'UPDATE_USER',
     ADD_REPOS: 'ADD_REPOS',
     UPDATE_REPOS: 'UPDATE_REPOS',
+    ADD_COMMITS: 'ADD_COMMITS'
 };

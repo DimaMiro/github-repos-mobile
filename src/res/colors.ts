@@ -4,7 +4,7 @@ export default {
     primaryOnLightTextColor: '#0066D6',
     secondaryOnLightTextColor: '#707883',
     darkBgColor: '#24292D',
-    inputBgColor: '#3F4447',
+    darkColor: '#3F4447',
     borderColor: '#D1D5D9',
     lightGrey: '#D1D5D9'
 };

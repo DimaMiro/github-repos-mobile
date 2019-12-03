@@ -2,6 +2,7 @@ import GUser from "../interfaces/user.interface";
 import {GRepo} from "../interfaces/repo.interface";
 import store from "../redux/store";
 import ACTION_TYPES from "../redux/actionTypes";
+import {GCommit} from "../interfaces/commit.interface";
 
 function addUserToStore(user: GUser) {
     store.dispatch({
@@ -16,9 +17,17 @@ function addReposToStore(repos: Array<GRepo>) {
     })
 }
 
+function addCommitsToStore(commits: Array<GCommit>) {
+    store.dispatch({
+        type: ACTION_TYPES.ADD_COMMITS,
+        payload: commits
+    })
+}
+
 
 const ReduxService = {
     addUserToStore,
-    addReposToStore
+    addReposToStore,
+    addCommitsToStore
 }
 export default ReduxService

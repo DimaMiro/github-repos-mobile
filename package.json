@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-do-expressions": "^7.7.4",
+    "date-fns": "^2.8.1",
     "expo": "^35.0.0",
     "react": "16.8.3",
     "react-dom": "16.8.3",
