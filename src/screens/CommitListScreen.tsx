@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView, ActivityIndicator, Animated, SectionList, Image} from 'react-native';
+import {View, Text, StyleSheet, ActivityIndicator, SectionList, Image} from 'react-native';
 import { connect } from 'react-redux';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import colors from '../res/colors';
@@ -46,9 +46,6 @@ class CommitListScreen extends React.Component<Props, State> {
                                    onPressAction={() => this.props.navigation.goBack()}/>
                     <Text style={styles.headerTitle} numberOfLines={1}>{this.state.userName}/{this.state.repoName}</Text>
                 </View>
-                {/*<ScrollView contentContainerStyle={styles.commitContainer}>*/}
-                {/*    {this.getCommitBlock()}*/}
-                {/*</ScrollView>*/}
                 {this.getCommitBlock()}
             </View>
         );
@@ -56,13 +53,19 @@ class CommitListScreen extends React.Component<Props, State> {
 
     sortByDate(array: Array<GCommit>) {
         let sortedObj = {}
-        for (let i = 0; i < array.length - 1; i++) {
+        if (array.length === 1){
             let sectionArray = [];
-            for (let j = i++; j < array.length ; j++) {
-                if (array[i]['date'] === array[j]['date']) {
-                    sectionArray.push(array[j])
+            sectionArray.push(array[0]);
+            sortedObj[array[0]['date']] = sectionArray
+        } else {
+            for (let i = 0; i < array.length - 1; i++) {
+                let sectionArray = [];
+                for (let j = i++; j < array.length ; j++) {
+                    if (array[i]['date'] === array[j]['date']) {
+                        sectionArray.push(array[j])
+                    }
+                    sortedObj[array[i]['date']] = sectionArray
                 }
-                sortedObj[array[i]['date']] = sectionArray
             }
         }
         return sortedObj
@@ -70,7 +73,7 @@ class CommitListScreen extends React.Component<Props, State> {
 
     getCommitBlock() {
         if(this.state.isLoading) {
-            return <ActivityIndicator/>
+            return <ActivityIndicator style={{marginTop: helpers.margin.m}}/>
         } else {
             if (this.props.commits !== undefined && this.props.commits.length > 0) {
                 let sectionArray = [];
@@ -86,7 +89,7 @@ class CommitListScreen extends React.Component<Props, State> {
                     renderSectionHeader={({ section }) => (
                         <View style={styles.sectionHeader}>
                             <Image source={images.commitIcon}/>
-                            <Text style={styles.sectionHeaderTitle}> Commits on {section.title}</Text>
+                            <Text style={styles.sectionHeaderTitle}>Commits on {section.title}</Text>
                         </View>
 
                     )}
@@ -166,6 +169,7 @@ const styles = StyleSheet.create({
     },
     sectionHeaderTitle: {
         fontSize: helpers.fonSize.caption,
-        color: colors.secondaryOnLightTextColor
+        color: colors.secondaryOnLightTextColor,
+        marginLeft: helpers.margin.s
     }
 });
