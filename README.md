@@ -1,5 +1,5 @@
 # Github repos. Demo mobile application
-Description.
+Mobile app based on Github API for searching users and explore their accounts and open repos.
 
 ## Screenshots
 ![github-pages-screens](https://user-images.githubusercontent.com/15017363/70132052-af8cf980-1683-11ea-9b4c-8dc5e6e95bab.png)
@@ -10,9 +10,10 @@ Description.
 * Expo SDK
 
 ## Features
-* Features #1
-* Features #2
-* Features #3
+* Search user
+* Fetch user info
+* Fetch repo list
+* Fetch commit list
 
 ## Author
 Dima Miro [d.miro.work@gmail.com](mailto:d.miro.work@gmail.com)
