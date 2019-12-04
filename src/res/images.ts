@@ -5,4 +5,5 @@ export default {
     avatarPlaceholder: require('../../assets/images/avatar-placeholder.png'),
     repoIcon: require('../../assets/images/repo-icon.png'),
     starIcon: require('../../assets/images/star-icon.png'),
+    commitIcon: require('../../assets/images/commit-icon.png'),
 }

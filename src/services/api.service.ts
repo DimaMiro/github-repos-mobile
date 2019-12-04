@@ -2,7 +2,9 @@ import {API_URL} from '../utils/api.config';
 
 function get(path: string) {
     return fetch(API_URL + path)
-        .then((response) => response.json())
+        .then((response) => {
+                return response.json()
+        })
         .catch((error) => {
             console.error(error);
         });
