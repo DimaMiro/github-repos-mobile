@@ -2,21 +2,25 @@ import React from 'react';
 import {View, Text, StyleSheet, ActivityIndicator, SectionList, Image} from 'react-native';
 import { connect } from 'react-redux';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+
 import colors from '../res/colors';
 import helpers from '../res/helpers';
 import images from "../res/images";
+
 import TouchableIcon from '../components/TouchableIcon';
 import CommitRow from '../components/CommitRow'
 import ApiService from '../services/api.service';
-import ReduxService from '../services/redux.service';
+
 import {GCommit} from "../interfaces/commit.interface";
 import { format } from 'date-fns'
+import * as actions from "../redux/actions";
 
 interface Props {
     navigation: any,
     userName: string,
     repoName: string,
-    commits: Array<GCommit>
+    commits: Array<GCommit>,
+    addCommits: (commits: Array<GCommit>) => void
 }
 interface State {
     isLoading: boolean,
@@ -52,7 +56,7 @@ class CommitListScreen extends React.Component<Props, State> {
     }
 
     sortByDate(array: Array<GCommit>) {
-        let sortedObj = {}
+        let sortedObj = {};
         if (array.length === 1){
             let sectionArray = [];
             sectionArray.push(array[0]);
@@ -119,7 +123,7 @@ class CommitListScreen extends React.Component<Props, State> {
                     };
                     commitArray.push(commit)
                 });
-                ReduxService.addCommitsToStore(commitArray);
+                this.props.addCommits(commitArray);
                 this.setState({isLoading: false});
             })
             .catch(error => console.log(error));
@@ -129,9 +133,14 @@ const mapStateToProps = (state) => {
     return {
         commits: state.commitState
     }
-}
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addCommits: commits => dispatch(actions.addCommits(commits))
+    }
+};
 
-export default connect(mapStateToProps)(CommitListScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(CommitListScreen)
 
 const styles = StyleSheet.create({
     container: {

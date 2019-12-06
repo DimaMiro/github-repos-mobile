@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import colors from '../res/colors';
 import images from '../res/images';
 import helpers from "../res/helpers";
+import * as actions from '../redux/actions'
 
 import ApiService from '../services/api.service';
-import ReduxService from "../services/redux.service";
 
 import GUser from '../interfaces/user.interface'
 
@@ -16,6 +16,7 @@ import PrimaryButton from '../components/PrimaryButton';
 
 interface Props {
     navigation: any,
+    addUser: (GUser) => void
 }
 interface State {
     inputText: string,
@@ -56,7 +57,7 @@ class SearchScreen extends React.Component<Props, State> {
                             login: res.login,
                             name: res.name,
                         };
-                        ReduxService.addUserToStore(user);
+                        this.props.addUser(user);
                         this.props.navigation.navigate('Home');
                         this.setState({isLoading: false});
                         this.setState({inputText: ''});
@@ -94,7 +95,13 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(SearchScreen)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addUser: user => dispatch(actions.addUser(user))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen)
 
 const styles = StyleSheet.create({
     container: {

@@ -2,15 +2,20 @@ import React from 'react';
 import {Animated, View, Text, StyleSheet, Image, ScrollView, ActivityIndicator} from 'react-native';
 import { connect } from 'react-redux';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+
 import colors from "../res/colors";
 import helpers from "../res/helpers";
 import images from "../res/images";
+
 import TouchableIcon from "../components/TouchableIcon";
 import RepoRow from "../components/RepoRow";
+
 import GUser from "../interfaces/user.interface";
 import {GRepo} from "../interfaces/repo.interface";
+
 import ApiService from "../services/api.service";
-import ReduxService from "../services/redux.service";
+
+import * as actions from "../redux/actions";
 
 
 const HEADER_MAX_HEIGHT = 152 + getStatusBarHeight();
@@ -20,7 +25,8 @@ const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 interface Props {
     navigation: any,
     user: GUser,
-    repos: Array<GRepo>
+    repos: Array<GRepo>,
+    addRepos: (repos: Array<GRepo>) => void
 }
 interface State {
     isLoading: boolean,
@@ -108,7 +114,7 @@ class HomeScreen extends React.Component<Props, State> {
                     }
                     repoArray.push(repo)
                 });
-                ReduxService.addReposToStore(repoArray);
+                this.props.addRepos(repoArray);
                 this.setState({isLoading: false});
             })
             .catch(error => console.log(error));
@@ -143,7 +149,6 @@ class HomeScreen extends React.Component<Props, State> {
         }
     }
     repoRowPressed(repoName: string){
-        console.log(repoName, this.props.user.login)
         this.props.navigation.navigate('CommitList',{userName: this.props.user.login, repoName: repoName});
     }
 }
@@ -153,9 +158,14 @@ const mapStateToProps = (state) => {
         user: state.userState,
         repos: state.repoState
     }
-}
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addRepos: repos => dispatch(actions.addRepos(repos))
+    }
+};
 
-export default connect(mapStateToProps)(HomeScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)
 
 const styles = StyleSheet.create({
     container: {

@@ -9,25 +9,12 @@ export const addUser = (user: GUser) => {
         payload: user
     }
 };
-export const updateUser = (user: GUser) => {
-    return {
-        type: ACTION_TYPES.UPDATE_USER,
-        payload: user
-    }
-};
 export const addRepos = (repos: Array<GRepo>) => {
     return {
         type: ACTION_TYPES.ADD_REPOS,
         payload: repos
     }
 };
-export const updateRepos = (repos: Array<GRepo>) => {
-    return {
-        type: ACTION_TYPES.UPDATE_REPOS,
-        payload: repos
-    }
-};
-
 export const addCommits = (commits: Array<GCommit>) => {
     return {
         type: ACTION_TYPES.ADD_COMMITS,
