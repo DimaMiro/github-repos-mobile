@@ -91,7 +91,7 @@ class SearchScreen extends React.Component<Props, State> {
 
 const mapStateToProps = (state) => {
     return {
-        recipes: state.recipeState
+        user: state.userState
     }
 }
 
